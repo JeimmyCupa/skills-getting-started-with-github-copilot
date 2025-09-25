@@ -13,6 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
       // Clear loading message
       activitiesList.innerHTML = "";
 
+      // Limpiar opciones previas del select (excepto la primera)
+      while (activitySelect.options.length > 1) {
+        activitySelect.remove(1);
+      }
+
       // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
         const activityCard = document.createElement("div");
@@ -25,6 +30,17 @@ document.addEventListener("DOMContentLoaded", () => {
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          <p><strong>Max participants:</strong> ${details.max_participants}</p>
+          <div class="activity-participants">
+            <div class="activity-participants-title" style="font-weight:bold; margin-bottom:4px;">Participants:</div>
+            <ul class="activity-participants-list">
+              ${
+                details.participants && details.participants.length > 0
+                  ? details.participants.map(email => `<li>${email}</li>`).join('')
+                  : '<li style="color:#888;">No participants yet</li>'
+              }
+            </ul>
+          </div>
         `;
 
         activitiesList.appendChild(activityCard);
